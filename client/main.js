@@ -37,9 +37,9 @@ const addCompliment = (event) => {
         : "couldn't add compliment"
     );
 
-    selectCompliment.innerHTML += `<option class="compliment" value="${
-      res.data.length - 1
-    }">${input.newCompliment}</option>`;
+    selectCompliment.innerHTML += `<option value="${res.data.length - 1}">${
+      input.newCompliment
+    }</option>`;
   });
   addComplimentInput.value = '';
 };
@@ -49,8 +49,20 @@ complimentForm.addEventListener('submit', addCompliment);
 const getCompliments = () => {
   axios.get(`${localHost}/api/compliments/`).then((res) => {
     for (let i = 0; i < res.data.length; i++) {
-      selectCompliment.innerHTML += `<option class="compliment" value="${i}">${res.data[i]}</option>`;
+      selectCompliment.innerHTML += `<option value="${i}">${res.data[i]}</option>`;
     }
   });
 };
 getCompliments();
+
+const complimentDelete = (event) => {
+  event.preventDefault();
+  let id = selectCompliment.value;
+  axios.delete(`${localHost}/api/compliment/${id}`).then((res) => {
+    if (confirm(`You deleted compliment: "${res.data}"`)) {
+      window.location.reload();
+    }
+  });
+};
+
+deleteForm.addEventListener('submit', complimentDelete);

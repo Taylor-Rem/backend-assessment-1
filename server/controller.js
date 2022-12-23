@@ -34,5 +34,10 @@ module.exports = {
     res.status(200).send(compliments);
   },
 
-  deleteCompliment: (req, res) => {},
+  deleteCompliment: (req, res) => {
+    console.log(+req.params.id);
+    let id = +req.params.id;
+    res.send(compliments[id]);
+    compliments.splice(id, 1);
+  },
 };
