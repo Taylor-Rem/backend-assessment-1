@@ -4,6 +4,12 @@ const compliments = [
   'Your Javascript skills are stellar.',
 ];
 
+const fortunes = [
+  'somebody will crash your car',
+  'You will find a pair of ski boots',
+  'you will find $3000 on your porch',
+];
+
 module.exports = {
   getCompliment: (req, res) => {
     // choose random compliment
@@ -18,11 +24,6 @@ module.exports = {
   },
 
   getFortune: (req, res) => {
-    const fortunes = [
-      'somebody will crash your car',
-      'You will find a pair of ski boots',
-      'you will find $3000 on your porch',
-    ];
     let randomIndex = Math.floor(Math.random() * fortunes.length);
     let randomFortune = fortunes[randomIndex];
     res.status(200).send(randomFortune);
@@ -39,5 +40,12 @@ module.exports = {
     let id = +req.params.id;
     res.send(compliments[id]);
     compliments.splice(id, 1);
+  },
+
+  editFortune: (req, res) => {
+    let { newFortune, existingFortune } = req.body;
+    let index = fortunes.indexOf(existingFortune);
+    fortunes[index] = newFortune;
+    res.send(fortunes[index]);
   },
 };

@@ -4,6 +4,8 @@ const complimentBtn = document.getElementById('complimentButton');
 
 const deleteForm = document.getElementById('delete-form');
 const selectCompliment = document.getElementById('select-compliment');
+const fortuneContainer = document.getElementById('fortune');
+const changeFortuneForm = document.getElementById('change-form');
 
 const getCompliment = () => {
   axios.get(localHost + '/api/compliment/').then((res) => {
@@ -17,10 +19,12 @@ complimentBtn.addEventListener('click', getCompliment);
 
 const getFortune = () => {
   axios.get(`${localHost}/api/fortune`).then((res) => {
-    alert(res.data);
+    fortuneContainer.innerHTML = `<p> Your fortune is: "<span id="fortune-txt">${res.data}</span>"</p>
+    <p id="change-txt">Don't like your fortune? Change it!</p>`;
   });
+  changeFortuneForm.innerHTML =
+    '<input type="text" id="change-fortune-txt"/><button>change fortune</button>';
 };
-
 document.getElementById('fortuneButton').addEventListener('click', getFortune);
 
 let complimentForm = document.getElementById('compliment-form');
@@ -66,3 +70,20 @@ const complimentDelete = (event) => {
 };
 
 deleteForm.addEventListener('submit', complimentDelete);
+
+const changeFortune = (event) => {
+  event.preventDefault();
+  const fortuneTxt = document.getElementById('fortune-txt');
+  const changeInput = document.getElementById('change-fortune-txt');
+  body = {
+    newFortune: changeInput.value,
+    existingFortune: fortuneTxt.innerHTML,
+  };
+  axios.put(`${localHost}/api/fortune/${fortuneTxt}`, body).then(
+    (res) =>
+      (fortuneContainer.innerHTML = `<p> Your fortune is: "<span id="fortune-txt">${res.data}</span>"</p>
+    <p id="change-txt">Don't like your fortune? Change it!</p>`)
+  );
+};
+
+changeFortuneForm.addEventListener('submit', changeFortune);
