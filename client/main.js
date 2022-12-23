@@ -2,9 +2,13 @@ const localHost = 'http://localhost:4000';
 
 const complimentBtn = document.getElementById('complimentButton');
 
+const deleteForm = document.getElementById('delete-form');
+const selectCompliment = document.getElementById('select-compliment');
+
 const getCompliment = () => {
   axios.get(localHost + '/api/compliment/').then((res) => {
     const data = res.data;
+    console.log(res.data);
     alert(data);
   });
 };
@@ -32,8 +36,21 @@ const addCompliment = (event) => {
         ? `You added the following compliment:  "${input.newCompliment}"`
         : "couldn't add compliment"
     );
+
+    selectCompliment.innerHTML += `<option class="compliment" value="${
+      res.data.length - 1
+    }">${input.newCompliment}</option>`;
   });
   addComplimentInput.value = '';
 };
 
 complimentForm.addEventListener('submit', addCompliment);
+
+const getCompliments = () => {
+  axios.get(`${localHost}/api/compliments/`).then((res) => {
+    for (let i = 0; i < res.data.length; i++) {
+      selectCompliment.innerHTML += `<option class="compliment" value="${i}">${res.data[i]}</option>`;
+    }
+  });
+};
+getCompliments();

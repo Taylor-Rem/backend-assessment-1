@@ -3,6 +3,7 @@ const compliments = [
   'Cool shirt!',
   'Your Javascript skills are stellar.',
 ];
+
 module.exports = {
   getCompliment: (req, res) => {
     // choose random compliment
@@ -10,6 +11,10 @@ module.exports = {
     let randomCompliment = compliments[randomIndex];
 
     res.status(200).send(randomCompliment);
+  },
+
+  getCompliments: (req, res) => {
+    res.send(compliments);
   },
 
   getFortune: (req, res) => {
