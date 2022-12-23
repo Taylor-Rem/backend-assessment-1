@@ -22,4 +22,12 @@ module.exports = {
     let randomFortune = fortunes[randomIndex];
     res.status(200).send(randomFortune);
   },
+
+  addCompliment: (req, res) => {
+    const { newCompliment } = req.body;
+    compliments.push(newCompliment);
+    res.status(200).send(compliments);
+  },
+
+  deleteCompliment: (req, res) => {},
 };

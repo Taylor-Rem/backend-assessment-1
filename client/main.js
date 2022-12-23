@@ -11,12 +11,29 @@ const getCompliment = () => {
 
 complimentBtn.addEventListener('click', getCompliment);
 
-const fortuneBtn = document.getElementById('fortuneButton');
-
 const getFortune = () => {
   axios.get(`${localHost}/api/fortune`).then((res) => {
     alert(res.data);
   });
 };
 
-fortuneBtn.addEventListener('click', getFortune);
+document.getElementById('fortuneButton').addEventListener('click', getFortune);
+
+let complimentForm = document.getElementById('compliment-form');
+
+let addComplimentInput = document.querySelector('#add-compliment');
+
+const addCompliment = (event) => {
+  event.preventDefault();
+  let input = { newCompliment: addComplimentInput.value };
+  axios.post(`${localHost}/api/compliment`, input).then((res) => {
+    alert(
+      res.data.includes(input.newCompliment)
+        ? `You added the following compliment:  "${input.newCompliment}"`
+        : "couldn't add compliment"
+    );
+  });
+  addComplimentInput.value = '';
+};
+
+complimentForm.addEventListener('submit', addCompliment);
